@@ -1,16 +1,12 @@
-# This is a sample Python script.
-
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from models.player import Player
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def main():
+    # monplayer = Player('Natalia', 'FABIANO', '12/11/1982', 'feme', '10')
+    monplayer2 = Player('2', 'Maria', 'FABIANO', '22/11/1986', 'feme', '1')
+    print(Player.serialize_player(monplayer2))
+    Player.save_player(monplayer2)
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
