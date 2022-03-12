@@ -1,5 +1,5 @@
 # Projet 4 - Développez un programme logiciel en Python - OpenClassrooms
-
+![alt text](img/img chess.png)
 ## Mise en place du projet:
 
 #### I) Windows :
