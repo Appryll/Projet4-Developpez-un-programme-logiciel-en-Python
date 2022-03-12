@@ -1,6 +1,5 @@
 # Projet 4 - Développez un programme logiciel en Python - OpenClassrooms
-![img chess](https://user-images.githubusercontent.com/63242221/158037895-9f03bc23-3b44-4dff-b045-18895987bc54.png)
-
+<img src="img/img chess.png" widht="250" height="250">
 ## Mise en place du projet:
 
 #### I) Windows :
