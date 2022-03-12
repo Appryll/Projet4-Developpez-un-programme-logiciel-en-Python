@@ -15,6 +15,7 @@ class Player:
 
     def serialize_player(self):
         """Return serialized player"""
+
         serialized_player = {
             'id_player': self.id_player,
             'nom': self.nom,
@@ -27,6 +28,7 @@ class Player:
 
     def save_player(self):
         """Save new player to database"""
+
         player_db = TinyDB('db/players.json')
         players_table = player_db.table('players')
         # players_table.truncate()  #  clear the table first
@@ -34,10 +36,10 @@ class Player:
 
     def update_player(self, info, option):
         """Update player info (from user input) in database
-
         @param info: user input (str, or int inf "rank")
         @param option: update info category
         """
+
         db = TinyDB('db/players.json')
         if option == "ranking":
             db.update({option: int(info)}, doc_ids=[self.id_player])
