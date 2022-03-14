@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Projet 4 - Développez un programme logiciel en Python - OpenClassrooms
+=======
+# Projet 4 - Développez un programme logiciel en Python - OpenClassrooms 
+>>>>>>> da6dc35b53aeac96ea99d00f04739075eef24fa1
 
 ## Mise en place du projet: <img src="img/img chess.png" widht="250" height="250">
 
