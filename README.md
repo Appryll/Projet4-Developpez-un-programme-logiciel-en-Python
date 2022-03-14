@@ -1,6 +1,6 @@
 # Projet 4 - Développez un programme logiciel en Python - OpenClassrooms
-![alt text](img/img chess.png)
-## Mise en place du projet:
+
+## Mise en place du projet: <img src="img/img chess.png" widht="250" height="250">
 
 #### I) Windows :
 Dans Windows Powershell, naviguer vers le dossier souhaité.

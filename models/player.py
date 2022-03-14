@@ -45,3 +45,17 @@ class Player:
             db.update({option: int(info)}, doc_ids=[self.id_player])
         else:
             db.update({option: info}, doc_ids=[self.id_player])
+
+    @staticmethod
+    def load_player():
+        """Load player database
+
+        @return: list of players
+        """
+        players_db = TinyDB('db/players.json')
+        players_db.all()
+        players = []
+        for item in players_db:
+            players.append(item)
+
+        return players
