@@ -49,7 +49,7 @@ class MenuViews:
             print(f"Player {players.index(item) + 1} : ", end='')
             print(f"{item['id']}", end=' | ')
             print(f"{item['nom']}, {item['prenom']}", end=' | ')
-            print(f"{item['date de naissance']}", end=' | ')
+            print(f"{item['date_naissance']}", end=' | ')
             print(f"Ranking : {item['ranking']}")
 
         print("\nEnregistrer dans la base de données ? [y/n] ", end='')
@@ -87,13 +87,13 @@ class MenuViews:
         print("\n" * 3 + "*** TOURNOI SÉLECTIONNÉ ***\n")
 
         for i in range(len(tournaments)):
-            print(f"[{tournaments[i]['id_tournoi']}]", end=' ')
-            print(tournaments[i]['nom_tournoi'], end=' | ')
+            print(f"[{tournaments[i]['id']}]", end=' ')
+            print(tournaments[i]['nom'], end=' | ')
             print(tournaments[i]['lieu'], end=" | ")
             print(tournaments[i]['description'], end=' | ')
-            print(f"Debut: {tournaments[i]['date_time_debut']}", end=' | ')
-            print(f"Fin: {tournaments[i]['date_time_fin']}", end=' | ')
-            print(f"Round {tournaments[i]['current_round']-1}/{tournaments[i]['rounds_total']}")
+            print(f"Debut: {tournaments[i]['debut_date']}", end=' | ')
+            print(f"Fin: {tournaments[i]['fin_date']}", end=' | ')
+            print(f"Round {tournaments[i]['matchs_en_cours']-1}/{tournaments[i]['matchs_total']}")
 
         print("\n[back] Retour au menu principal")
 

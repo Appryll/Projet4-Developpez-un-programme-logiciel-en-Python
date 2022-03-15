@@ -32,7 +32,7 @@ class Player:
         """Save new player to database
         Set player ID as document ID
         """
-        players_db = self.player_db.table('players')
+        players_db = self.player_db
         self.id_player = players_db.insert(self.serialize_player())
         players_db.update({'id': self.id_player}, doc_ids=[self.id_player])
 
@@ -43,7 +43,7 @@ class Player:
         @param option: update info category
         """
         db = self.player_db
-        if option == "rank":
+        if option == "ranking":
             db.update({option: int(info)}, doc_ids=[self.id_player])
         else:
             db.update({option: info}, doc_ids=[self.id_player])

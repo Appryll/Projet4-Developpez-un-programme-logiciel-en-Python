@@ -58,23 +58,23 @@ class MatchViews:
             ])
 
         print("\n\n- FINAL SCORES -\n")
-        print(f"{t.nom.upper()}, {t.location.title()} | Description : {t.description}")
-        print(f"Debut : {t.date_time_debut} | Fin : {t.date_time_fin} | Time control : {t.controle_du_tempsl}\n")
+        print(f"{t.nom_tournoi.upper()}, {t.lieu.title()} | Description : {t.description}")
+        print(f"Debut : {t.debut_date} | Fin : {t.fin_date} | Time control : {t.controle_du_temps}\n")
 
         print(self.table)
 
     @staticmethod
-    def round_header(t, date_time_debut):
+    def round_header(t, debut_date):
         """Display tournament info as a round header
 
         @param t: current tournament
-        @param date_time_debut: tournament start time (str)
+        @param debut_date: tournament start time (str)
         """
         print("\n\n")
 
-        h_1 = f"{t.nom.upper()}, {t.location.title()} | Description : {t.description}"
-        h_2 = f"Date-time debut : {t.date_time_debut} | Controle du temps : {t.controle_du_temps}\n"
-        h_3 = f"- ROUND {t.match_en_cours}/{t.matchs_totall} | {date_time_debut} -"
+        h_1 = f"{t.nom_tournoi.upper()}, {t.lieu.title()} | Description : {t.description}"
+        h_2 = f"Debut : {t.debut_date} Fin : {t.fin_date} | Controle du temps : {t.controle_du_temps}\n"
+        h_3 = f"- ROUND {t.match_en_cours}/{t.matchs_total} | {debut_date} -"
 
         print(h_1.center(100, " "))
         print(h_2.center(100, " "))

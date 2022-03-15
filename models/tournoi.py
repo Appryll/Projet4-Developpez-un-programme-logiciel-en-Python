@@ -16,13 +16,13 @@ class Tournoi:
         self.matchs_total = matchs_total
         self.players = players
         self.matchs = matchs
-        self.tour_db = TinyDB('db/tournaments.json')
+        self.tour_db = TinyDB('db/tournois.json')
 
     def serialize_tournoi(self):
         """Return serialized tournoi"""
 
         serialized_tournoi = {
-            'id_tournoi': self.id_tournoi,
+            'id': self.id_tournoi,
             'nom': self.nom_tournoi,
             'lieu': self.lieu,
             'debut_date': self.debut_date,
@@ -66,16 +66,16 @@ class Tournoi:
         """Save new tournament to database
         Set tournament ID as document ID
         """
-        tournoi_table = self.tour_db.table('tournoi')
+        tournoi_table = self.tour_db
         self.id_tournoi = tournoi_table.insert(self.serialize_tournoi())
         tournoi_table.update({'id': self.id_tournoi}, doc_ids=[self.id_tournoi])
 
     def update_tournai(self):
         """Update tournament info (after each round) in database"""
         db = TinyDB('db/tournois.json')
-        db.update({'rounds': self.matchs}, doc_ids=[self.id_tournoi])
+        db.update({'matchs': self.matchs}, doc_ids=[self.id_tournoi])
         db.update({'players': self.players}, doc_ids=[self.id_tournoi])
-        db.update({'current_round': self.match_en_cours}, doc_ids=[self.id_tournoi])
+        db.update({'matchs_en_cours': self.match_en_cours}, doc_ids=[self.id_tournoi])
 
     def update_timer(self, timer, info):
         """Update start or end timer of tournament
@@ -92,7 +92,7 @@ class Tournoi:
 
         @return: list of tournaments
         """
-        db = TinyDB('db/tournaments.json')
+        db = TinyDB('db/tournois.json')
         db.all()
         tournois_list = []
         for item in db:

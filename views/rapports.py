@@ -82,9 +82,10 @@ class RapportsViews:
                 tournaments[i]["nom"],
                 tournaments[i]["lieu"],
                 tournaments[i]["description"],
-                tournaments[i]["date"],
+                tournaments[i]["debut_date"],
+                tournaments[i]["fin_date"],
                 tournaments[i]["controle_du_temps"],
-                str(tournaments[i]["current_round"]-1) + "/" + str(tournaments[i]["rounds_total"]),
+                str(tournaments[i]["matchs_en_cours"]-1) + "/" + str(tournaments[i]["matchs_total"]),
                 participants
             ])
 
@@ -138,9 +139,9 @@ class RapportsViews:
         """
         print("\n\n")
 
-        h_1 = f"{info['nom_tournoi'].upper()}, {info['lieu'].title()} | Description : {info['description']}"
+        h_1 = f"{info['nom'].upper()}, {info['lieu'].title()} | Description : {info['description']}"
         h_2 = \
-            f"Date : {info['date']} | " \
+            f"Debut : {info['debut_date']}  Fin : {info['fin_date']}| " \
             f"Contrôle du temps : {info['controle_du_temps']} | " \
             f"Tour joué : {info['matchs_en_cours']-1}/{info['matchs_total']}"
 

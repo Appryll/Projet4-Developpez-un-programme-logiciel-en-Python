@@ -46,7 +46,7 @@ class RapportsControllers:
         user_input, tournaments = self.tournament_select()
 
         self.rapports_view.report_header(tournaments[int(user_input) - 1])
-        self.rapports_view.display_rounds_report(tournaments[int(user_input) - 1]["rounds"])
+        self.rapports_view.display_rounds_report(tournaments[int(user_input) - 1]["matchs"])
 
     def tournament_matches(self):
         """All matches from a tournament"""
@@ -54,7 +54,7 @@ class RapportsControllers:
 
         self.rapports_view.report_header(tournaments[int(user_input) - 1])
 
-        rounds = tournaments[int(user_input) - 1]["rounds"]
+        rounds = tournaments[int(user_input) - 1]["matchs"]
         round_matches = []
         for i in range(len(rounds)):
             round_matches.append(rounds[i][3])

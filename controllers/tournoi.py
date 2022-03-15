@@ -22,25 +22,25 @@ class TournoiController:
         """
         if t.match_en_cours == 1:
             t.date = self.timer
-            t.update_timer(t.date, 'start_date')
+            t.update_timer(t.date, 'debut_date')
 
             self.first_round(t)
             t.match_en_cours += 1
-            t.update_tournament_db()
+            t.update_tournai()
 
             while t.match_en_cours <= t.matchs_total:
                 self.next_rounds(t)
                 t.match_en_cours += 1
-                t.update_tournament_db()
+                t.update_tournai()
 
         elif 1 < t.match_en_cours <= t.matchs_total:
             while t.match_en_cours <= t.matchs_total:
                 self.next_rounds(t)
                 t.match_en_cours += 1
-                t.update_tournament()
+                t.update_tournai()
 
             t.end_date = self.timer
-            t.update_timer(t.end_date, 'end_date')
+            t.update_timer(t.end_date, 'fin_date')
             self.tournament_end(t)
 
         elif t.match_en_cours > t.matchs_total:
@@ -49,7 +49,7 @@ class TournoiController:
     def first_round(self, t):
         """First round : top players vs. bottom players
         Get pairings and set round to save to DB"""
-        r = Match("Round 1", self.timer, "TBD")
+        r = Match("Round 1", self.timer, "À déterminer")
         t.sort_players_by_rank()
         top_players, bottom_players = t.split_players()
         self.match_view.round_header(t, r.date_time_debut)
@@ -67,7 +67,7 @@ class TournoiController:
 
         if user_input == "ok":
             r.end_datetime = self.timer
-            t.rounds.append(r.set_rounds())
+            t.matchs.append(r.set_rounds())
             t.merge_players(top_players, bottom_players)
 
             self.end_of_round(scores_list, t)
@@ -78,7 +78,7 @@ class TournoiController:
     def next_rounds(self, t):
         """Next rounds : set possible pairings
         Get pairings and set round to save to DB"""
-        r = Match(("Round " + str(t.match_en_cours)), self.timer, "TBD")
+        r = Match(("Round " + str(t.match_en_cours)), self.timer, "À déterminer")
         t.sort_players_by_score()
         self.match_view.round_header(t, r.date_time_debut)
 
@@ -114,7 +114,7 @@ class TournoiController:
 
         if user_input == "ok":
             r.end_datetime = self.timer
-            t.rounds.append(r.set_rounds())
+            t.matchs.append(r.set_rounds())
             self.end_of_round(scores_list, t)
 
         elif user_input == "back":
@@ -281,7 +281,7 @@ class TournoiController:
             if int(user_input) == players[i]["id"]:
                 p = players[players.index(players[i])]
                 p = Player(
-                    p['id_player'],
+                    p['id'],
                     p['nom'],
                     p['prenom'],
                     p['date_naissance'],
