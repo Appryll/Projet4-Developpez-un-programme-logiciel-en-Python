@@ -8,32 +8,32 @@ class MatchViews:
 
         self.round_field_names = [
             "Match #",
-            "Name P1",
-            "Rank P1",
+            "Nom P1",
+            "Ranking P1",
             "Score P1",
             " ",
-            "Name P2",
-            "Rank P2",
+            "Nom P2",
+            "Ranking P2",
             "Score P2"
         ]
 
         self.results_field_names = [
             "Tournament ranking",
-            "Name",
+            "Nom",
             "Final Score",
             "Global ranking"
         ]
 
-    def display_matches(self, matches):
+    def display_matches(self, rounds):
         """Display matches for current round as table
 
-        @param matches: list of matches tuples
+        @param rounds: list of matches tuples
         """
         self.table.clear()
         self.table.field_names = self.round_field_names
 
-        for i in range(len(matches)):
-            row = list(matches[i])
+        for i in range(len(rounds)):
+            row = list(rounds[i])
             row.insert(0, str(i+1))
             row.insert(4, "vs.")
 
@@ -52,29 +52,29 @@ class MatchViews:
         for i in range(len(t.players)):
             self.table.add_row([
                 i+1,
-                t.players[i]["last_name"] + ", " + t.players[i]["first_name"],
+                t.players[i]["nom"] + ", " + t.players[i]["prenom"],
                 t.players[i]["score"],
-                t.players[i]["rank"]
+                t.players[i]["ranking"]
             ])
 
         print("\n\n- FINAL SCORES -\n")
-        print(f"{t.name.upper()}, {t.location.title()} | Description : {t.description}")
-        print(f"Start : {t.start_date} | End : {t.end_date} | Time control : {t.time_control}\n")
+        print(f"{t.nom.upper()}, {t.location.title()} | Description : {t.description}")
+        print(f"Debut : {t.date_time_debut} | Fin : {t.date_time_fin} | Time control : {t.controle_du_tempsl}\n")
 
         print(self.table)
 
     @staticmethod
-    def round_header(t, start_time):
+    def round_header(t, date_time_debut):
         """Display tournament info as a round header
 
         @param t: current tournament
-        @param start_time: tournament start time (str)
+        @param date_time_debut: tournament start time (str)
         """
         print("\n\n")
 
-        h_1 = f"{t.name.upper()}, {t.location.title()} | Description : {t.description}"
-        h_2 = f"Start date and time : {t.start_date} | Time control : {t.time_control}\n"
-        h_3 = f"- ROUND {t.current_round}/{t.rounds_total} | {start_time} -"
+        h_1 = f"{t.nom.upper()}, {t.location.title()} | Description : {t.description}"
+        h_2 = f"Date-time debut : {t.date_time_debut} | Controle du temps : {t.controle_du_temps}\n"
+        h_3 = f"- ROUND {t.match_en_cours}/{t.matchs_totall} | {date_time_debut} -"
 
         print(h_1.center(100, " "))
         print(h_2.center(100, " "))
@@ -88,9 +88,9 @@ class MatchViews:
     @staticmethod
     def score_options(match_number):
         print("\nMatch ", match_number)
-        print('[0] Draw')
-        print('[1] Player 1 wins')
-        print('[2] Player 2 wins')
+        print('[0] Match null')
+        print('[1] Player 1 gagnant')
+        print('[2] Player 2 gagnant')
         print("\n[back] Back to main menu")
 
     @staticmethod

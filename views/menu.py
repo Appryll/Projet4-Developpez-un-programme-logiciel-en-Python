@@ -17,7 +17,7 @@ class MenuViews:
         print("[3] Resume tournoi")
         """ print("[E] Editer un joueur")"""
         print("[4] Rapports")
-        print("\n[Q] Quitter")
+        print("[5] Quitter")
 
     @staticmethod
     def create_tournament_header():
@@ -50,7 +50,7 @@ class MenuViews:
             print(f"{item['id']}", end=' | ')
             print(f"{item['nom']}, {item['prenom']}", end=' | ')
             print(f"{item['date de naissance']}", end=' | ')
-            print(f"Rank : {item['ranking']}")
+            print(f"Ranking : {item['ranking']}")
 
         print("\nEnregistrer dans la base de données ? [y/n] ", end='')
 
@@ -84,7 +84,7 @@ class MenuViews:
 
         @param tournaments: tournaments list
         """
-        print("\n" * 3 + "--- TOURNOI SÉLECTIONNÉ ---\n")
+        print("\n" * 3 + "*** TOURNOI SÉLECTIONNÉ ***\n")
 
         for i in range(len(tournaments)):
             print(f"[{tournaments[i]['id_tournoi']}]", end=' ')
@@ -121,7 +121,7 @@ class MenuViews:
         @param p: currently edited player
         @param options: editable options
         """
-        print("\n" * 2 + "--- UPDATE PLAYER INFO ---\n")
+        print("\n" * 2 + "*** UPDATE PLAYER INFO ***\n")
         print(f"Updating {p.nom}, {p.prenom}\n")
         for i in range(len(options)):
             print(f"[{i+1}] Update {options[i]}")
@@ -174,7 +174,7 @@ class MenuViews:
 
     @staticmethod
     def update_rank():
-        print("\nUpdate ranks ? [y/n] ", end='')
+        print("\nUpdate ranking ? [y/n] ", end='')
 
     @staticmethod
     def rank_update_header(player):

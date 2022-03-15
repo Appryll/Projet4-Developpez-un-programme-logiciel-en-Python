@@ -1,8 +1,7 @@
-from controllers.tournoi import TournoiController
 from controllers.rapports import RapportsControllers
+from controllers.tournoi import TournoiController
 from models.player import Player
 from models.tournoi import Tournoi
-
 from views.menu import MenuViews
 
 
@@ -10,8 +9,8 @@ class MenuControllers:
 
     def __init__(self):
         self.menu_view = MenuViews()
-        self.tournoi_controllers = TournoiController()
-        self.rapports_controllers = RapportsControllers()
+        self.tour_cont = TournoiController()
+        self.reports_cont = RapportsControllers()
 
     def main_menu_start(self):
         """Main menu selector :
@@ -36,7 +35,7 @@ class MenuControllers:
         elif user_input == "4":
             self.reports_menu()
 
-        elif user_input == "Q":
+        elif user_input == "5":
             self.menu_view.are_you_sure_exit()
             user_input = input().lower()
 
@@ -49,44 +48,79 @@ class MenuControllers:
             self.menu_view.input_error()
             self.main_menu_start()
 
-    def new_player(self):
-        """Create new player, serialize and save to DB"""
-        self.menu_view.create_new_player_header()
-        player_info = []
+    def new_tournament(self):
+        """Create new tournament, serialize and save to DB"""
+        self.menu_view.create_tournament_header()
+        tournament_info = []
         options = [
             "nom",
-            "prenom",
-            "date de naissance (dd/mm/yyyy)",
-            "sexe [M/F/O]",
-            "ranking"
+            "lieu",
+            "description"
         ]
+
         for item in options:
             self.menu_view.input_prompt_text(item)
             user_input = input()
+
             if user_input == "back":
                 self.main_menu_start()
-            else:
-                player_info.append(user_input)
 
-        MenuViews.review_player(player_info)
+            else:
+                tournament_info.append(user_input)
+
+        tournament_info.append(self.input_time_control())
+        tour_players = self.select_players(8)
+
+        self.menu_view.review_tournament(tournament_info, tour_players)
         user_input = input().lower()
 
         if user_input == "y":
-            player = Player(
-                id_player=0,
-                nom=player_info[0],
-                prenom=player_info[1],
-                date_naissance=player_info[2],
-                sexe=player_info[3],
-                ranking=int(player_info[4])
+            tournament = Tournoi(
+                id_tournoi=0,
+                nom_tournoi=tournament_info[0],
+                lieu=tournament_info[1],
+                debut_date="Not started",
+                fin_date="TBD",
+                description=tournament_info[2],
+                controle_du_temps=tournament_info[3],
+                players=tour_players,
+                match_en_cours=1,
+                matchs=[]
             )
+            tournament.save_tournoi()
+            self.menu_view.tournament_saved()
 
-            player.save_player()
-            self.menu_view.player_saved()
-            self.main_menu_start()
+            self.menu_view.start_tournament_prompt()
+            user_input = input()
+
+            if user_input == "y":
+                self.tour_cont.start_tournament(tournament)
+            elif user_input == "n":
+                self.main_menu_start()
 
         elif user_input == "n":
             self.main_menu_start()
+
+    def input_time_control(self):
+        """Select time control for new tournament
+
+        @return: time control (str)
+        """
+        self.menu_view.time_control_options()
+        self.menu_view.input_prompt()
+        user_input = input()
+
+        if user_input == "1":
+            return "Bullet"
+        elif user_input == "2":
+            return "Blitz"
+        elif user_input == "3":
+            return "Rapid"
+        elif user_input == "back":
+            self.main_menu_start()
+        else:
+            self.menu_view.input_error()
+            self.input_time_control()
 
     def select_players(self, players_total):
         """Select players for new tournament
@@ -125,6 +159,74 @@ class MenuControllers:
 
         return tour_players
 
+    def resume_tournament(self):
+        """Select existing tournament to resume"""
+        tournament_list = Tournoi.load_tournament()
+
+        self.menu_view.select_tournament(tournament_list)
+        self.menu_view.input_prompt()
+        user_input = input()
+
+        if user_input == "back":
+            self.main_menu_start()
+
+        for i in range(len(tournament_list)):
+            if user_input == str(tournament_list[i]["id"]):
+                t = tournament_list[i]
+                t = Tournoi(
+                    t["id"],
+                    t["nom"],
+                    t["lieu"],
+                    t["debut_date"],
+                    t["fin_date"],
+                    t["description"],
+                    t["controle_du_temps"],
+                    t["matchs_en_cours"],
+                    t["players"],
+                    t["matchs"],
+                    t["matchs_total"]
+                )
+                self.tour_cont.start_tournament(t)
+
+    def new_player(self):
+        """Create new player, serialize and save to DB"""
+        self.menu_view.create_new_player_header()
+        player_info = []
+        options = [
+            "Nom",
+            "Prenom",
+            "Date de naissance (dd/mm/yyyy)",
+            "sexe [M/F/O]",
+            "ranking"
+        ]
+        for item in options:
+            self.menu_view.input_prompt_text(item)
+            user_input = input()
+            if user_input == "back":
+                self.main_menu_start()
+            else:
+                player_info.append(user_input)
+
+        MenuViews.review_player(player_info)
+        user_input = input().lower()
+
+        if user_input == "y":
+            player = Player(
+                id_player=0,
+                nom=player_info[0],
+                prenom=player_info[1],
+                date_naissance=player_info[2],
+                sexe=player_info[3],
+                ranking=int(player_info[4])
+            )
+
+            player.save_player()
+            self.menu_view.player_saved()
+            self.main_menu_start()
+
+        elif user_input == "n":
+            self.main_menu_start()
+
     def update_player(self):
         """Update existing player info"""
         players = Player.load_player()
@@ -138,7 +240,7 @@ class MenuControllers:
 
         p = players[int(user_input) - 1]
         p = Player(
-            p['id_player'],
+            p['id'],
             p['nom'],
             p['prenom'],
             p['date_naissance'],
@@ -189,16 +291,16 @@ class MenuControllers:
             self.player_reports_sorting(Player.load_player())
 
         elif user_input == "2":
-            self.player_reports_sorting(self.rapports_controllers.tournament_players())
+            self.player_reports_sorting(self.reports_cont.tournament_players())
 
         elif user_input == "3":
-            self.rapports_controllers.all_tournaments()
+            self.reports_cont.all_tournaments()
 
         elif user_input == "4":
-            self.rapports_controllers.tournament_rounds()
+            self.reports_cont.tournament_rounds()
 
         elif user_input == "5":
-            self.rapports_controllers.tournament_matches()
+            self.reports_cont.tournament_matches()
 
         elif user_input == "back":
             self.main_menu_start()
@@ -216,112 +318,6 @@ class MenuControllers:
         elif user_input == "n":
             self.main_menu_start()
 
-    def new_tournament(self):
-        """Create new tournament, serialize and save to DB"""
-        self.menu_view.create_tournament_header()
-        tournament_info = []
-        options = [
-            "nom du tournoi",
-            "lieu",
-            "description"
-        ]
-
-        for item in options:
-            self.menu_view.input_prompt_text(item)
-            user_input = input()
-
-            if user_input == "back":
-                self.main_menu_start()
-
-            else:
-                tournament_info.append(user_input)
-
-        tournament_info.append(self.input_time_control())
-        tour_players = self.select_players(8)
-
-        self.menu_view.review_tournament(tournament_info, tour_players)
-        user_input = input().lower()
-
-        if user_input == "y":
-            tournament = Tournoi(
-                id_tournoi=0,
-                nom_tournoi=tournament_info[0],
-                lieu=tournament_info[1],
-                date="Not started",
-                nombre_de_tours=4,
-                tourneaus=tournament_info[4],
-                description=tournament_info[2],
-                controle_du_temps=tournament_info[3],
-                match_en_cours=1,
-                matchs_total=tournament_info[5],
-                players=tour_players,
-                matchs=[]
-            )
-            tournament.save_tournoi()
-            self.menu_view.tournament_saved()
-
-            self.menu_view.start_tournament_prompt()
-            user_input = input()
-
-            if user_input == "y":
-                self.tournoi_controllers.start_tournament(tournament)
-            elif user_input == "n":
-                self.main_menu_start()
-
-        elif user_input == "n":
-            self.main_menu_start()
-
-    def input_time_control(self):
-        """Select time control for new tournament
-
-        @return: time control (str)
-        """
-        self.menu_view.time_control_options()
-        self.menu_view.input_prompt()
-        user_input = input()
-
-        if user_input == "1":
-            return "Bullet"
-        elif user_input == "2":
-            return "Blitz"
-        elif user_input == "3":
-            return "Rapid"
-        elif user_input == "back":
-            self.main_menu_start()
-        else:
-            self.menu_view.input_error()
-            self.input_time_control()
-
-    def resume_tournament(self):
-        """Select existing tournament to resume"""
-        tournament_list = Tournoi.load_tournament()
-
-        self.menu_view.select_tournament(tournament_list)
-        self.menu_view.input_prompt()
-        user_input = input()
-
-        if user_input == "back":
-            self.main_menu_start()
-
-        for i in range(len(tournament_list)):
-            if user_input == str(tournament_list[i]["id"]):
-                t = tournament_list[i]
-                t = Tournoi(
-                    t["id_tournoi"],
-                    t["nom_tournoi"],
-                    t["lieu"],
-                    t["date"],
-                    t["nombre_de_tours"],
-                    t["tourneaus"],
-                    t["description"],
-                    t["controle_du_temps"],
-                    t["match_en_cours"],
-                    t["matchs_total"],
-                    t["players"],
-                    t["matchs"]
-                )
-                self.tournoi_controllers.start_tournament(t)
-
     def player_reports_sorting(self, players):
         """Select sorting option (name or rank) for players
 
@@ -332,10 +328,10 @@ class MenuControllers:
         user_input = input()
 
         if user_input == "1":
-            self.rapports_controllers.all_players_name(players)
+            self.reports_cont.all_players_name(players)
 
         elif user_input == "2":
-            self.rapports_controllers.all_players_rank(players)
+            self.reports_cont.all_players_rank(players)
 
         elif user_input == "back":
             self.main_menu_start()

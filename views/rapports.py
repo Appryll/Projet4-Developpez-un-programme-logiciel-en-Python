@@ -53,7 +53,7 @@ class RapportsViews:
 
         for i in range(len(players)):
             self.table.add_row([
-                players[i]["id_player"],
+                players[i]["id"],
                 players[i]["nom"],
                 players[i]["prenom"],
                 players[i]["sexe"],
@@ -78,7 +78,7 @@ class RapportsViews:
                     str(players[k]["id"]) + " : " + players[k]["nom"])
 
             self.table.add_row([
-                tournaments[i]["id_tournoi"],
+                tournaments[i]["id"],
                 tournaments[i]["nom"],
                 tournaments[i]["lieu"],
                 tournaments[i]["description"],
@@ -146,4 +146,3 @@ class RapportsViews:
 
         print(h_1)
         print(h_2)
-

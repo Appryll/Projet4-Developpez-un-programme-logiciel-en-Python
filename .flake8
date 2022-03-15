@@ -3,6 +3,6 @@ max-line-length = 119
 
 exclude=
     .gitignore,
-    env/,
+    venv/,
     README.md,
     requirements
