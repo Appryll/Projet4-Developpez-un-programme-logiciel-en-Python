@@ -1,3 +1,19 @@
+from rich import print
+from rich.console import Console
+from rich.theme import Theme
+
+custom_theme = Theme({
+    "info": "yellow",
+    "title_ppal": "bold magenta",
+    "title": "bold #FFC600",
+    "subtitle": "bold #EF2F88",
+    "danger": "bold red on white",
+    "succes": "bold green",
+    "option": "#85F4FF"
+})
+console = Console(theme=custom_theme)
+
+
 class MenuViews:
 
     def __init__(self):
@@ -5,23 +21,26 @@ class MenuViews:
 
     @staticmethod
     def app_title():
-        print("********************************")
-        print("         TOURNOI SUISSE")
-        print("********************************")
+
+        console.print("********************************", style="title_ppal")
+        console.print("         TOURNOI SUISSE", style="title_ppal")
+        console.print("********************************", style="title_ppal")
 
     @staticmethod
     def main_menu():
-        print("\n" * 2 + "-=-=- MENU PRINCIPAL -=-=-\n")
+        console.print("\n" * 2 + "-=-=- MENU PRINCIPAL -=-=-\n", style="title")
         print("[1] Créer un nouveau tournoi")
         print("[2] Créer un nouveau player")
         print("[3] Resume tournoi")
         """ print("[E] Editer un joueur")"""
         print("[4] Rapports")
         print("[5] Quitter")
+        console.print("\n" + "([u]Attention![/u] S'il n'y a pas de joueurs chargés dans la base de données," + "\n" +
+                      "veuillez bien d'abord commencer par ajouter les données du joueur)", style="italic #D1D1D1")
 
     @staticmethod
     def create_tournament_header():
-        print("\n" * 3 + "*** NOUVEAU TOURNOI ***")
+        console.print("\n" * 3 + "*** NOUVEAU TOURNOI ***", style="subtitle")
 
     @staticmethod
     def time_control_options():
@@ -29,7 +48,7 @@ class MenuViews:
         print("[1] Bullet")
         print("[2] Blitz")
         print("[3] Rapid")
-        print("\n[back] Retour au menu principal")
+        console.print("\n(Tapez [i]'back'[/i] pour retourner au menu principal)")
 
     @staticmethod
     def review_tournament(info, players):
@@ -38,7 +57,7 @@ class MenuViews:
         @param info: input info list
         @param players: list of selected players
         """
-        print("\n\nNouveau tournoi créé :\n")
+        console.print("\n\nNouveau tournoi créé :\n", style="succes")
         print(f"{info[0].upper()}, {info[1].title()}", end=' | ')
         print(f"Description : {info[2]}", end=' | ')
         print("Rounds : 4", end=' | ')
@@ -52,15 +71,15 @@ class MenuViews:
             print(f"{item['date_naissance']}", end=' | ')
             print(f"Ranking : {item['ranking']}")
 
-        print("\nEnregistrer dans la base de données ? [y/n] ", end='')
+        console.print("\nEnregistrer dans la base de données ? (y/n) ", end='', style="info")
 
     @staticmethod
     def tournament_saved():
-        print("\nTournoi enregistré avec succès !")
+        console.print("\nTournoi enregistré avec succès !", style="succes")
 
     @staticmethod
     def start_tournament_prompt():
-        print("\nCommencer le tournoi maintenant ? [y/n] ", end='')
+        console.print("\nCommencer le tournoi maintenant ? (y/n) ", end='', style="info")
 
     @staticmethod
     def select_players(players, player_number):
@@ -69,14 +88,14 @@ class MenuViews:
         @param players: list of players
         @param player_number: number of current player for new tournament (if editing player == "")
         """
-        print(f"\nSélectionner un joueur {player_number} :\n")
+        print(f"\nSélectionnez un joueur {player_number} :\n")
         for i in range(len(players)):
             print(f"[{players[i]['id']}]", end=' ')
             print(f"{players[i]['nom']}, {players[i]['prenom']}", end=" | ")
             print(f"{players[i]['sexe']} | {players[i]['date_naissance']}", end=" | ")
             print(f"Ranking: {players[i]['ranking']}")
 
-        print("\n[back] Retour au menu principal")
+        console.print("\n(Tapez [i]'back'[/i] pour retourner au menu principal)")
 
     @staticmethod
     def select_tournament(tournaments):
@@ -84,7 +103,7 @@ class MenuViews:
 
         @param tournaments: tournaments list
         """
-        print("\n" * 3 + "*** TOURNOI SÉLECTIONNÉ ***\n")
+        console.print("\n" * 3 + "*** TOURNOI SÉLECTIONNÉ ***\n", style="subtitle")
 
         for i in range(len(tournaments)):
             print(f"[{tournaments[i]['id']}]", end=' ')
@@ -95,11 +114,11 @@ class MenuViews:
             print(f"Fin: {tournaments[i]['fin_date']}", end=' | ')
             print(f"Round {tournaments[i]['matchs_en_cours']-1}/{tournaments[i]['matchs_total']}")
 
-        print("\n[back] Retour au menu principal")
+        console.print("\n(Tapez [i]'back'[/i] pour retourner au menu principal)")
 
     @staticmethod
     def create_new_player_header():
-        print("\n" * 3 + "- NOUVEAU PLAYER -\n")
+        console.print("\n" * 3 + "*** NOUVEAU PLAYER ***\n", style="subtitle")
 
     @staticmethod
     def review_player(info):
@@ -107,12 +126,12 @@ class MenuViews:
 
         @param info: player info list
         """
-        print("\n" * 2 + "Nouveau joueur créé :\n")
+        console.print("\n" * 2 + "Nouveau joueur créé :\n", style="succes")
         print(f"{info[0]}, {info[1]}", end=' | ')
         print(f"Date de naissance : {info[2]}", end=' | ')
         print(f"Sexe : {info[3]}", end=' | ')
         print(f"Rang : {info[4]}")
-        print("\nEnregistrer dans la base de données ? [y/n] ", end='')
+        console.print("\nEnregistrer dans la base de données ? (y/n) ", end='', style="info")
 
     @staticmethod
     def update_player_info(p, options):
@@ -121,61 +140,61 @@ class MenuViews:
         @param p: currently edited player
         @param options: editable options
         """
-        print("\n" * 2 + "*** UPDATE PLAYER INFO ***\n")
-        print(f"Updating {p.nom}, {p.prenom}\n")
+        console.print("\n" * 2 + "*** UPDATE PLAYER INFO ***\n", style="subtitle")
+        console.print(f"Updating {p.nom}, {p.prenom}\n", style="succes")
         for i in range(len(options)):
             print(f"[{i+1}] Update {options[i]}")
 
-        print("\n[back] Retour au menu principal")
+        console.print("\n(Tapez [i]'back'[/i] pour retourner au menu principal)")
 
     @staticmethod
     def player_saved():
-        print("\nPlayer enregistré avec succès !")
+        console.print("\nPlayer enregistré avec succès !", style="succes")
 
     @staticmethod
     def reports_menu():
-        print("\n" * 3 + "*** REPPORTS ***\n")
+        console.print("\n" * 3 + "*** REPPORTS ***\n", style="subtitle")
         print("[1] Tous les players")
         print("[2] Players dans un tournoi")
         print("[3] Tous les tournois")
         print("[4] Tours dans un tournoi")
         print("[5] Matchs dans un tournoi")
-        print("\n[back] Retour au menu principal")
+        print("\n(Tapez [i]'back'[/i] pour retourner au menu principal)")
 
     @staticmethod
     def reports_player_sorting():
         print("\n[1] Trier par nom")
         print("[2] Trier par rang")
-        print("\n[back] Retour au menu principal")
+        console.print("\n(Tapez [i]'back'[/i] pour retourner au menu principal)")
 
     @staticmethod
     def input_prompt_text(option):
-        print(f"\nEntrer {option} : |- [back] pour retourner au menu principal -| ", end='')
+        console.print(f"\nEntrer {option} : (Tapez [i]'back'[/i] pour retourner au menu principal)  ", end='')
 
     @staticmethod
     def input_prompt():
-        print("\nType [option] and press Enter : ", end='')
+        console.print("\nTapez l'option et pressez Enter SVP : ", end='', style="option")
 
     @staticmethod
     def are_you_sure_exit():
-        print("\nÊtes-vous sûr de vouloir quitter le programme ? [y/n] ", end='')
+        console.print("\nÊtes-vous sûr de vouloir quitter le programme ? (y/n) ", end='', style="info")
 
     @staticmethod
     def input_error():
-        print("\nInput error, please enter a valid option.")
+        console.print("\nInput error, please enter a valid option.", style="danger")
 
     @staticmethod
     def player_already_selected():
-        print("\nPlayer déjà sélectionné. Veuillez sélectionner un autre player.")
+        console.print("\nPlayer déjà sélectionné. Veuillez sélectionner un autre player.", style="danger")
 
     @staticmethod
     def other_report():
-        print("\nSouhaitez-vous voir un autre rapport ? [y/n] ", end='')
+        console.print("\nSouhaitez-vous voir un autre rapport ? (y/n) ", end='', style='info')
 
     @staticmethod
     def update_rank():
-        print("\nUpdate ranking ? [y/n] ", end='')
+        console.print("\nUpdate ranking ? (y/n) ", end='', style='info')
 
     @staticmethod
     def rank_update_header(player):
-        print(f"\nUpdating {player.nom}, {player.prenom}")
+        console.print(f"\nUpdating {player.nom}, {player.prenom}", style="succes")

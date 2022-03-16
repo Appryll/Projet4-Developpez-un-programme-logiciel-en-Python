@@ -1,4 +1,7 @@
 from prettytable import PrettyTable
+from rich import print
+from rich.console import Console
+console = Console()
 
 
 class RapportsViews:
@@ -61,7 +64,7 @@ class RapportsViews:
                 players[i]["ranking"]
             ])
 
-        print(f"\n\n\n- All players ({sorting}) -\n")
+        console.print(f"\n\n\n- All players ({sorting}) -\n", style="underline bold")
         print(self.table)
 
     def display_tournaments_report(self, tournaments):
@@ -89,7 +92,7 @@ class RapportsViews:
                 participants
             ])
 
-        print("\n\n\n- All tournaments -\n")
+        console.print("\n" * 2 + "- All tournaments -\n", style="underline bold")
         print(self.table)
 
     def display_matches_report(self, matches):
@@ -102,7 +105,7 @@ class RapportsViews:
             matches[i].insert(3, "vs.")
             self.table.add_row(matches[i])
 
-        print(f"\n\n- All played matches ({len(matches)} total) -\n")
+        console.print(f"\n\n- All played matches ({len(matches)} total) -\n", style="underline bold")
         print(self.table)
 
     def display_rounds_report(self, rounds):
@@ -128,7 +131,7 @@ class RapportsViews:
                         rounds[i][3][j]
                     ])
 
-        print("\n\n- All played rounds -\n")
+        console.print("\n\n- All played rounds -\n", style="underline bold")
         print(self.table)
 
     @staticmethod

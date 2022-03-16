@@ -1,4 +1,13 @@
 from prettytable import PrettyTable
+from rich import print
+from rich.console import Console
+from rich.theme import Theme
+
+custom_theme = Theme({
+    "info": "yellow",
+    "option": "#85F4FF"
+})
+console = Console(theme=custom_theme)
 
 
 class MatchViews:
@@ -57,7 +66,7 @@ class MatchViews:
                 t.players[i]["ranking"]
             ])
 
-        print("\n\n- FINAL SCORES -\n")
+        console.print("\n\n- FINAL SCORES -\n", style="underline bold")
         print(f"{t.nom_tournoi.upper()}, {t.lieu.title()} | Description : {t.description}")
         print(f"Debut : {t.debut_date} | Fin : {t.fin_date} | Time control : {t.controle_du_temps}\n")
 
@@ -82,8 +91,8 @@ class MatchViews:
 
     @staticmethod
     def round_over():
-        print("\nRound over ? [ok]")
-        print("Back to main menu ? [back]")
+        console.print("\nRound terminé ? (Tapez ok)", style="info")
+        console.print("Tapez [i]'back'[/i] pour retourner au menu principal")
 
     @staticmethod
     def score_options(match_number):
@@ -91,8 +100,8 @@ class MatchViews:
         print('[0] Match null')
         print('[1] Player 1 gagnant')
         print('[2] Player 2 gagnant')
-        print("\n[back] Back to main menu")
+        console.print("\nTapez [i]'back'[/i] pour retourner au menu principal")
 
     @staticmethod
     def score_input_prompt():
-        print('\nEnter result :', end=' ')
+        console.print('\nEntrez le score :', end=' ', style="option")
